@@ -5,7 +5,7 @@ set -e
 IF_TEST=0
 # Directory storing tiles sampled from S01-preprocessing/scripts/4-Extracting-Patches-Features.sh
 # IT MUST BE UNDER DIR_DATA or DIR_DATA_EXP
-DIR_FEAT=feats-l1-s256-mrandom_be-n1000-color_norm
+DIR_FEAT=features_TMA_UNI
 
 # Build initial KNN graph
 method=knn
@@ -18,11 +18,11 @@ DIR_GRAPH=graph-${method}-k${K}-t${T}
 DIR_REPO=../tools
 
 # Path of pathology images, only used for tuning experiments
-DIR_DATA_EXP=/home/liup/tmp/NLST_Path_Tmp
+DIR_DATA_EXP=/scratch/nmoreau/pancreas/
 # Path of pathology images, only used for formal experiments
-DIR_DATA=/NAS/Dataset/NLST/PathologySlide
+DIR_DATA=/scratch/nmoreau/pancreas/
 # tables directory
-TBS_DATA=/NAS/Dataset/NLST/Pathology
+TBS_DATA=/scratch/nmoreau/pancreas/
 
 
 cd ${DIR_REPO}
@@ -32,7 +32,7 @@ if [ ${IF_TEST} -eq 1 ]; then
     python3 graph_builder.py \
         --dir_input ${DIR_DATA_EXP}/${DIR_FEAT}/h5_files \
         --dir_output ${DIR_DATA_EXP}/${DIR_FEAT}/${DIR_GRAPH} \
-        --csv_sld2pat ${TBS_DATA}/nlst_path_path2pat.csv \
+        --csv_sld2pat ${TBS_DATA}/survival_pred_tma_train.csv \
         --graph_level patient \
         --num_neighbours ${K} \
         --threshold ${T} \
@@ -43,7 +43,7 @@ else
     python3 graph_builder.py \
         --dir_input ${DIR_DATA}/${DIR_FEAT}/h5_files \
         --dir_output ${DIR_DATA}/${DIR_FEAT}/${DIR_GRAPH} \
-        --csv_sld2pat ${TBS_DATA}/nlst_path_path2pat.csv \
+        --csv_sld2pat ${TBS_DATA}/survival_pred_tma_train.csv \
         --graph_level patient \
         --method ${method} \
         --num_neighbours ${K} \
