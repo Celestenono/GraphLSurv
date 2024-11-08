@@ -1,0 +1,68 @@
+# task
+task: GraphLSurv
+experiment_type: sim
+random_state: 42
+
+# output
+save_path: /scratch/nmoreau/pancreas/results_survival_pred/
+
+# spliting
+seed_split: [360, 568, 630, 788, 850]
+data_split: /scratch/nmoreau/pancreas/split_pancalize/pancalize-seed{}.npz
+
+# data
+dataset_name: pancalize
+dir_sld_feat: /scratch/nmoreau/pancreas/features_TMA_UNI/h5_files/
+k_knn_graph: 6
+dir_pat_graph: /scratch/nmoreau/pancreas/features_TMA_UNI/graph/
+path_csv: /scratch/nmoreau/pancreas/survival_pred_tma_train.csv
+undirect_graph: True
+split_stratify: False
+save_prediction: True
+
+# training
+batch_size: 1
+num_workers: 4
+optimizer_type: adam
+lr: 0.0001
+weight_decay: 0.0005
+lr_factor: 0.8
+lr_patience: 15
+lr_min: 0.00001
+epochs: 50
+bp_every_iters: 16
+patience: 20
+
+# graph_learn_regularization
+graph_reg: True
+smoothness_ratio: 0.3 # respective to \alpha
+degree_ratio: 0.00
+sparsity_ratio: 0.00
+
+# model
+model_in_dim: 1024
+model_hid_dim: 128
+model_out_dim: 1
+model_num_layers: 1 # respective to the number of GCN-HMP layers
+model_dropout_ratio: 0.6
+
+# loss
+loss_type: sim-breslow
+reg_l1: 0.00001
+
+# anchor graph learner layer
+agl_hid_dim: 128
+agl_ratio_anchors: 0.2 # respective to the value of r/s
+agl_epsilon: 0.6 # respective to \delta
+agl_topk: null
+agl_metric_type: transformer
+
+# anchor graph encoder layer
+age_graph_hops: 1 # respective to # standard GCN layers in one GCN-HMP layer, viewed as 1 x GCN-HMP if it is 1
+age_ratio_init_graph: 0.5 # respective to \lambda
+age_dropout_ratio: 0.6
+age_batch_norm: False
+
+# device
+no_cuda: False
+cuda_id: 0
