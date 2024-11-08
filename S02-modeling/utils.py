@@ -316,8 +316,10 @@ def sample_anchors(x, node_mask, ratio, fill_value=0):
     node_mask: [B, N_max]
     """
 
-    print(node_mask.shape)
-    print(x.shape)
+    # Ensure node_mask has two dimensions [B, N_max]
+    if node_mask.dim() == 1:
+        node_mask = node_mask.unsqueeze(0)  # Reshape from [N_max] to [1, N_max]
+
     batch_size = x.size(0)
     num_nodes = node_mask.sum(1)
     max_nodes = num_nodes.max().cpu()
