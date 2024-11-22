@@ -58,6 +58,8 @@ class GraphBuilder(object):
             self.summary()
 
     def summary(self):
+        print(len(self.edges))
+        print(self.method)
         print("GraphBuilder Summary:")
         print(f"Graph with {len(self.feats)} nodes, {len(self.edges) if self.edges is not None else 'NA'} edges.")
         print(f"Each node has {self.feats.shape[1]} features.")
